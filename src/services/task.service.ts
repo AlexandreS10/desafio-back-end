@@ -26,27 +26,6 @@ class TaskService {
     return data;
   }
 
-  public async listById(idTask: string): Promise<ResponseDto> {
-    // 1- validar se a task existe
-    const task = await prisma.task.findUnique({
-      where: {
-        id: idTask,
-      },
-    });
-
-    if (!task) {
-      return {
-        code: 404,
-        message: "User not found",
-      };
-    }
-
-    return {
-      code: 200,
-      message: "Task successfully listed",
-      data: task,
-    };
-  }
   public async create(data: CreateTaskDto): Promise<ResponseDto> {
     const criacaoTask = await prisma.task.create({
       data: {

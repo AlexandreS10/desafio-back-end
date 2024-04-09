@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import taskService from "../services/task.service";
 
 class TaskController {
-  public async index(req: Request, res: Response) {
+  public async list(req: Request, res: Response) {
     const tasks = await taskService.findAll();
 
     return res
@@ -31,24 +31,6 @@ class TaskController {
     });
   }
 
-  public async list(req: Request, res: Response) {
-    const { id } = req.params;
-    try {
-      const result = await taskService.listById(id);
-
-      return res.status(200).send({
-        success: true,
-        message: "Task succesfuly listed",
-        data: { result },
-      });
-    } catch (error: any) {
-      return res.status(404).send({
-        success: false,
-        message: "Task not found",
-        data: { error },
-      });
-    }
-  }
   public async update(req: Request, res: Response) {
     const { idTask } = req.params;
     const { title, description } = req.body;
