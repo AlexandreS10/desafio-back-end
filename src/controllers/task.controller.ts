@@ -11,7 +11,6 @@ class TaskController {
   }
 
   public async create(req: Request, res: Response) {
-    const idUser = req.authUser.id;
     const { title, description } = req.body;
 
     if (!title || !description) {
@@ -21,9 +20,8 @@ class TaskController {
       });
     }
     const task = await taskService.create({
-      idUser: idUser,
       title,
-     description
+      description,
     });
 
     return res.status(201).send({
@@ -36,7 +34,7 @@ class TaskController {
   public async list(req: Request, res: Response) {
     const { id } = req.params;
     try {
-      const result = await taskService.findById(id);
+      const result = await taskService.listById(id);
 
       return res.status(200).send({
         success: true,
@@ -52,26 +50,24 @@ class TaskController {
     }
   }
   public async update(req: Request, res: Response) {
-    const { idTask} = req.params;
-    const {id}= req.authUser
-    const { title, description} = req.body;
+    const { idTask } = req.params;
+    const { title, description } = req.body;
     try {
       const result = await taskService.update({
-        idUser:id,
         idTask,
         title,
-        description
+        description,
       });
 
       return res.status(200).send({
         success: true,
-        message: "Tweet succesfully updated",
-        data: { tweet: result },
+        message: "Task succesfully updated",
+        data: { task: result },
       });
     } catch (error: any) {
       return res.status(400).send({
         success: false,
-        message: "Erro ao atualizar Tweet",
+        message: "Erro ao atualizar Task",
         data: { error },
       });
     }
@@ -79,15 +75,13 @@ class TaskController {
 
   public async delete(req: Request, res: Response) {
     const { idTask } = req.params;
-    const {id}= req.authUser
 
     try {
-      const result = await taskService.delete({ idTask, idUser:id });
+      await taskService.delete({ idTask });
 
       return res.status(200).send({
         success: true,
         message: "Task succesfully deleted",
-        data: { task: result },
       });
     } catch (error: any) {
       return res.status(400).send({

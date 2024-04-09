@@ -1,28 +1,23 @@
 import prisma from "../database/prisma.database";
 
 export interface CreateTaskDto {
-    idUser: string
-    title: string;
-    description: string;
-  }
-  export interface ResponseDto{
-    code: number;
-    message:string;
-    data?:any
-   
+  title: string;
+  description: string;
+}
+export interface ResponseDto {
+  code: number;
+  message: string;
+  data?: any;
 }
 export interface UpdateTaskDto {
-    idUser:string;
-    idTask: string;
-    title?: string
-    description?: string;
-  }
-  
-  export interface FoundTaskDto {
-    idUser: string;
-    idTask: string;
-  }
-  
+  idTask: string;
+  title?: string;
+  description?: string;
+}
+
+export interface FoundTaskDto {
+  idTask: string;
+}
 
 class TaskService {
   public async findAll(): Promise<any> {
@@ -31,40 +26,32 @@ class TaskService {
     return data;
   }
 
-  public async listByIdUser(idUser: string): Promise<ResponseDto> {
-    // 1- validar se o user existe
-    const user = await prisma.user.findUnique({
+  public async listById(idTask: string): Promise<ResponseDto> {
+    // 1- validar se a task existe
+    const task = await prisma.task.findUnique({
       where: {
-        id: idUser,
+        id: idTask,
       },
     });
 
-    if (!user) {
+    if (!task) {
       return {
         code: 404,
         message: "User not found",
       };
     }
 
-    // 2- listar os tasks do user
-    const tasks = await prisma.task.findMany({
-      where: {
-        idUser,
-      },
-    });
-
     return {
       code: 200,
-      message: "Tasks successfully listed",
-      data: tasks,
+      message: "Task successfully listed",
+      data: task,
     };
   }
   public async create(data: CreateTaskDto): Promise<ResponseDto> {
     const criacaoTask = await prisma.task.create({
       data: {
-        idUser: data.idUser,
         title: data.title,
-        description:data.description
+        description: data.description,
       },
     });
 
@@ -93,9 +80,8 @@ class TaskService {
         id: data.idTask,
       },
       data: {
-        idUser:data.idUser,
-        title:data.title,
-        description:data.description
+        title: data.title,
+        description: data.description,
       },
     });
 
@@ -129,6 +115,5 @@ class TaskService {
       message: "Task successfully deleted",
     };
   }
- 
 }
 export default new TaskService();
