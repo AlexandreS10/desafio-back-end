@@ -8,9 +8,10 @@ datasource db {
 }
 
 model Task {
-    id          String @id @default(uuid())
+    id          String   @id @default(uuid())
     title       String
     description String
+    createdAt   DateTime @default(now()) @map("created_at")
 
     @@unique([id])
     @@map("tasks")

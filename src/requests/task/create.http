@@ -2,7 +2,7 @@ POST http://localhost:3333/tasks HTTP/1.1
 content-type: application/json
 
 {
-    "title": "",
-    "description": "",
+    "title": "Trabalho",
+    "description": "resolver o problema do banco de dados"
 
 }
