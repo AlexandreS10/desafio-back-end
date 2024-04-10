@@ -37,7 +37,7 @@ class TaskService {
     return {
       code: 201,
       message: "Task created sucessfully",
-      data: criacaoTask.toJson(),
+      data: criacaoTask,
     };
   }
 
@@ -67,7 +67,7 @@ class TaskService {
     return {
       code: 200,
       message: "Task updated succesfully",
-      data: atualizarTask.toJson(),
+      data: atualizarTask,
     };
   }
   public async delete(data: FoundTaskDto): Promise<ResponseDto> {

@@ -49,7 +49,7 @@ class TaskController {
     } catch (error: any) {
       return res.status(400).send({
         success: false,
-        message: "Erro ao atualizar Task",
+        message: "Error updating task",
         data: { error },
       });
     }
