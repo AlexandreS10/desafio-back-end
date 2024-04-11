@@ -11,6 +11,7 @@ class TaskController {
   }
 
   public async create(req: Request, res: Response) {
+    const idUser = req.authUser.id;
     const { title, description } = req.body;
 
     if (!title || !description) {
@@ -20,6 +21,7 @@ class TaskController {
       });
     }
     const task = await taskService.create({
+      idUser: idUser,
       title,
       description,
     });
@@ -33,9 +35,11 @@ class TaskController {
 
   public async update(req: Request, res: Response) {
     const { idTask } = req.params;
+    const { id } = req.authUser;
     const { title, description } = req.body;
     try {
       const result = await taskService.update({
+        idUser: id,
         idTask,
         title,
         description,
@@ -57,9 +61,10 @@ class TaskController {
 
   public async delete(req: Request, res: Response) {
     const { idTask } = req.params;
+    const { id } = req.authUser;
 
     try {
-      await taskService.delete({ idTask });
+      await taskService.delete({ idTask, idUser: id });
 
       return res.status(200).send({
         success: true,
@@ -68,7 +73,7 @@ class TaskController {
     } catch (error: any) {
       return res.status(400).send({
         success: false,
-        message: "Erro ao deletar Task",
+        message: "Error deleted Task",
         data: { error },
       });
     }

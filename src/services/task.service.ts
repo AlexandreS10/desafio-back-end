@@ -1,6 +1,7 @@
 import prisma from "../database/prisma.database";
 
 export interface CreateTaskDto {
+  idUser: string;
   title: string;
   description: string;
 }
@@ -10,12 +11,14 @@ export interface ResponseDto {
   data?: any;
 }
 export interface UpdateTaskDto {
+  idUser: string;
   idTask: string;
   title?: string;
   description?: string;
 }
 
 export interface FoundTaskDto {
+  idUser: string;
   idTask: string;
 }
 
@@ -29,6 +32,7 @@ class TaskService {
   public async create(data: CreateTaskDto): Promise<ResponseDto> {
     const criacaoTask = await prisma.task.create({
       data: {
+        idUser: data.idUser,
         title: data.title,
         description: data.description,
       },
@@ -59,6 +63,7 @@ class TaskService {
         id: data.idTask,
       },
       data: {
+        idUser: data.idUser,
         title: data.title,
         description: data.description,
       },
